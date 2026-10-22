@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LunarTweaks — PC optimizer</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+html:has(.theme-dark){color-scheme:dark;scrollbar-color:#2A2540 #07060D}
+html:has(.theme-light){color-scheme:light;scrollbar-color:#CFC7E6 #F6F4FB}
+.theme-dark{--bg:#07060D;--surface:#110F1C;--surface2:#1A1729;--line:#262139;--text:#F2EFFA;--muted:#A49EBC;--accent:#7C3AED;--accent-ink:#C4A1FF;--on-accent:#FFFFFF;--glow:rgba(124,58,237,0.38);--glow2:rgba(79,70,229,0.26);--ga:0.36;--gb:0.26;--glowop:0.62;--nav:rgba(7,6,13,0.62)}
+.theme-light{--bg:#F6F4FB;--surface:#FFFFFF;--surface2:#EFEBF8;--line:#E2DCEF;--text:#15111F;--muted:#5A546E;--accent:#6D28D9;--accent-ink:#6D28D9;--on-accent:#FFFFFF;--glow:rgba(124,58,237,0.16);--glow2:rgba(79,70,229,0.12);--ga:0.17;--gb:0.13;--glowop:0.3;--nav:rgba(246,244,251,0.72)}
+.root,.root *{transition:background-color .6s ease,color .6s ease,border-color .6s ease,box-shadow .6s ease}
+.root.vt,.root.vt *:not(.ic):not(.wash):not(.glowpos){transition:none!important}
+.glowpos{transition:none!important}
+a{color:var(--accent-ink)}a:hover{color:var(--text)}
+.grad{background-image:linear-gradient(95deg,#D05CFF 0%,#8B5CF6 50%,#5B6CFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.theme-light .grad{background-image:linear-gradient(95deg,#A21CAF 0%,#6D28D9 50%,#4338CA 100%)}
+.btn{transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s cubic-bezier(.22,1,.36,1),background-color .6s ease,color .6s ease,border-color .6s ease}
+.btn:hover{transform:translateY(-3px)}
+.btn:active{transform:translateY(0) scale(.98);transition-duration:.15s}
+.btn-primary:hover{box-shadow:0 16px 36px -12px rgba(124,58,237,0.75)}
+.card{transition:transform .6s cubic-bezier(.22,1,.36,1),border-color .5s ease,background-color .6s ease,box-shadow .6s cubic-bezier(.22,1,.36,1)}
+.card:hover{transform:translateY(-5px);border-color:var(--accent);box-shadow:0 24px 50px -30px var(--glow)}
+.tabs{--tabw:112px}
+.tab{width:var(--tabw);border:0;background:transparent;color:var(--muted);cursor:pointer;position:relative;z-index:1}
+.tab:hover{color:var(--text)}
+.tab.on{color:#FFFFFF}
+.tab-ind{transition:background-color .6s ease}
+.ic{transition:opacity .5s ease,transform .7s cubic-bezier(.34,1.56,.64,1)}
+.tg .ic-sun{opacity:0;transform:rotate(-120deg) scale(.4)}
+.tg .ic-moon{opacity:1;transform:none}
+.tg.is-light .ic-sun{opacity:1;transform:none}
+.tg.is-light .ic-moon{opacity:0;transform:rotate(120deg) scale(.4)}
+.seg{border:0;cursor:pointer;background:transparent;color:var(--muted)}
+.seg.on{background:var(--text);color:var(--bg)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes breathe{0%,100%{opacity:.78}50%{opacity:1}}
+.pv{grid-area:1/1;opacity:0;visibility:hidden}
+.pv.on{opacity:1;visibility:visible}
+.float{animation:float 6s ease-in-out infinite}
+.breathe{animation:breathe 10s ease-in-out infinite}
+@media (max-width:720px){.tabs{--tabw:calc((100vw - 44px) / 4);order:3;width:100%}.hide-sm{display:none}}
+.sec{scroll-margin-top:100px}
+</style>
+</helmet>
+
+<div class="root {{themeClass}} {{vtClass}}" style="position: relative; isolation: isolate; overflow: clip; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font-family: 'Manrope', system-ui, sans-serif; font-size: 17px; line-height: 1.6">
+
+<div class="wash" aria-hidden="true" style="position: fixed; left: {{washLeft}}; top: {{washTop}}; width: {{washSize}}; height: {{washSize}}; border-radius: 50%; background: {{washBg}}; transform: {{washTransform}}; opacity: {{washOpacity}}; transition: {{washTransition}}; z-index: 100; pointer-events: none"></div>
+
+<div class="glowpos" aria-hidden="true" style="position: fixed; z-index: 0; opacity: var(--glowop); top: -560px; left: -520px; width: 1240px; height: 1240px; pointer-events: none; transform: {{glowA}}"><img class="breathe" src="./assets/905067bf163fd67856702c50c0b35412.png" alt="" style="display: block; width: 100%; height: 100%"></div>
+<div class="glowpos" aria-hidden="true" style="position: fixed; z-index: 0; opacity: var(--glowop); bottom: -620px; right: -560px; width: 1320px; height: 1320px; pointer-events: none; transform: {{glowB}}"><img class="breathe" src="./assets/7fe4cc393faf58f70fc72b8d81631e4f.png" alt="" style="display: block; width: 100%; height: 100%; animation-delay: -5s"></div>
+
+<header style="position: sticky; top: 0; z-index: 20; background: var(--nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px)">
+<nav style="max-width: 1200px; margin: 0 auto; padding: 18px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px">
+<button onClick="{{goHome}}" aria-label="LunarTweaks home" style="display: flex; align-items: center; gap: 12px; padding: 0; border: 0; background: transparent; color: var(--text); cursor: pointer">
+<img src="./assets/c3ef71e4eb6b70020b1c08ce5c4632ac.png" alt="" style="width: 38px; height: 38px; border-radius: 11px; display: block; box-shadow: 0 6px 18px -6px rgba(124,58,237,0.7)">
+<span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.02em">Lunar<span style="color: var(--accent-ink)">Tweaks</span></span>
+</button>
+
+<div class="tabs" style="position: relative; display: flex; margin: 0 auto; padding: 5px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface)">
+<span class="tab-ind" aria-hidden="true" style="position: absolute; top: 5px; left: 5px; width: var(--tabw); height: calc(100% - 10px); border-radius: 999px; background: var(--accent); transform: {{tabX}}"></span>
+<button class="tab {{tabHome}}" onClick="{{goHome}}" aria-current="{{curHome}}" style="min-height: 42px; border-radius: 999px; font-family: inherit; font-size: 15px; font-weight: 600">Home</button>
+<button class="tab {{tabFeatures}}" onClick="{{goFeatures}}" aria-current="{{curFeatures}}" style="min-height: 42px; border-radius: 999px; font-family: inherit; font-size: 15px; font-weight: 600">Features</button>
+<button class="tab {{tabPricing}}" onClick="{{goPricing}}" aria-current="{{curPricing}}" style="min-height: 42px; border-radius: 999px; font-family: inherit; font-size: 15px; font-weight: 600">Pricing</button>
+<button class="tab {{tabDownload}}" onClick="{{goDownload}}" aria-current="{{curDownload}}" style="min-height: 42px; border-radius: 999px; font-family: inherit; font-size: 15px; font-weight: 600">Download</button>
+</div>
+
+<div style="display: flex; align-items: center; gap: 12px">
+<button class="tg btn {{tgClass}}" onClick="{{toggleTheme}}" aria-label="{{tgLabel}}" title="{{tgLabel}}" style="position: relative; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; padding: 0; flex: none">
+<svg class="ic ic-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; left: 12px; top: 12px"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg>
+<svg class="ic ic-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; top: 12px"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>
+</button>
+<button class="btn btn-primary hide-sm" onClick="{{goDownload}}" style="min-height: 46px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-family: inherit; font-size: 15px; font-weight: 700; cursor: pointer">Get the app</button>
+</div>
+</nav>
+</header>
+
+<main class="stage" style="position: relative; z-index: 2; isolation: isolate; flex: 1; display: flex; flex-direction: column; gap: clamp(110px, 13vw, 170px); width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: clamp(40px, 7vw, 88px) clamp(16px, 4vw, 40px)">
+
+<section id="home" class="sec" style="min-height: calc(100vh - 200px); justify-content: center; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px">
+<div class="rise d1" style="position: relative">
+<img aria-hidden="true" alt="" src="./assets/905067bf163fd67856702c50c0b35412.png" style="position: absolute; left: -90px; top: -90px; width: calc(100% + 180px); height: calc(100% + 180px); opacity: calc(var(--glowop) * 0.85); pointer-events: none">
+<img class="float" src="./assets/c3ef71e4eb6b70020b1c08ce5c4632ac.png" alt="LunarTweaks logo" style="position: relative; view-transition-name: lt-logo; display: block; width: 136px; height: 136px; border-radius: 34px; box-shadow: 0 30px 60px -24px rgba(124,58,237,0.75)">
+</div>
+<span class="rise d2" style="display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 14px; font-weight: 600; color: var(--muted)"><span style="width: 7px; height: 7px; border-radius: 50%; background: var(--accent-ink)"></span>For Windows 10 &amp; 11</span>
+<h1 class="rise d3" style="margin: 0; max-width: 920px; font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(40px, 6vw, 80px); line-height: 1.04; letter-spacing: -0.04em">Your PC, tuned to its <span class="grad">exact specs.</span></h1>
+<p class="rise d4" style="margin: 0; max-width: 600px; font-size: 19px; color: var(--muted)">LunarTweaks reads your CPU, GPU, memory and storage, then builds an optimization profile for that hardware — not a one-size-fits-all preset.</p>
+<div class="rise d5" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 6px">
+<button class="btn btn-primary" onClick="{{goDownload}}" style="display: inline-flex; align-items: center; gap: 10px; min-height: 56px; padding: 0 30px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-family: inherit; font-size: 17px; font-weight: 700; cursor: pointer">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"></path><path d="M7 10l5 5 5-5"></path><path d="M5 20h14"></path></svg>
+Download free</button>
+<button class="btn" onClick="{{goPricing}}" style="min-height: 56px; padding: 0 30px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); font-family: inherit; font-size: 17px; font-weight: 700; cursor: pointer">See plans</button>
+</div>
+<div class="rise d6" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px 32px; margin-top: 18px; font-size: 15px; color: var(--muted)">
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Hardware-aware profiles</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>One-click restore</span>
+<span style="display: inline-flex; align-items: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Free to start</span>
+</div>
+</section>
+
+<section id="features" class="sec" style="display: flex; flex-direction: column; gap: 44px">
+<div style="display: flex; flex-direction: column; gap: 14px; max-width: 720px">
+<span class="rise d1" style="font-size: 14px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent-ink)">FEATURES</span>
+<h2 class="rise d2" style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.06; letter-spacing: -0.035em">Everything your PC should have shipped with.</h2>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px">
+<div class="card rise d3" style="display: flex; flex-direction: column; gap: 14px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--accent-ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path></svg></span>
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600">Hardware-aware tuning</h3>
+<p style="margin: 0; color: var(--muted)">Settings chosen for your specific CPU, GPU and memory — not copied from a forum post.</p>
+</div>
+<div class="card rise d4" style="display: flex; flex-direction: column; gap: 14px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--accent-ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 11h4M8 9v4"></path><path d="M15 12h.01M18 10h.01"></path><path d="M17.3 5H6.7a4 4 0 0 0-4 3.6L2 15a3 3 0 0 0 5.4 2l1.2-1.5h6.8l1.2 1.5A3 3 0 0 0 22 15l-.7-6.4A4 4 0 0 0 17.3 5z"></path></svg></span>
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600">Per-game profiles</h3>
+<p style="margin: 0; color: var(--muted)">Switches to a performance profile when a game launches and back when it closes.</p>
+</div>
+<div class="card rise d5" style="display: flex; flex-direction: column; gap: 14px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--accent-ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"></path></svg></span>
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600">Startup cleanup</h3>
+<p style="margin: 0; color: var(--muted)">See what launches with Windows and switch off what you never asked for.</p>
+</div>
+<div class="card rise d6" style="display: flex; flex-direction: column; gap: 14px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--accent-ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg></span>
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600">Driver check</h3>
+<p style="margin: 0; color: var(--muted)">Flags outdated or mismatched drivers and points you to the right version.</p>
+</div>
+<div class="card rise d7" style="display: flex; flex-direction: column; gap: 14px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--accent-ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span>
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600">Scheduled tune-ups</h3>
+<p style="margin: 0; color: var(--muted)">Re-checks after Windows updates and keeps your profile in place.</p>
+</div>
+<div class="card rise d8" style="display: flex; flex-direction: column; gap: 14px; padding: 30px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="width: 46px; height: 46px; border-radius: 14px; background: var(--surface2); display: flex; align-items: center; justify-content: center; color: var(--accent-ink)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path></svg></span>
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 600">One-click restore</h3>
+<p style="margin: 0; color: var(--muted)">Every change is logged. Undo one tweak or roll everything back.</p>
+</div>
+</div>
+</section>
+
+<section id="pricing" class="sec" style="display: flex; flex-direction: column; gap: 40px">
+<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px">
+<span class="rise d1" style="font-size: 14px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent-ink)">PRICING</span>
+<h2 class="rise d2" style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(32px, 4.4vw, 56px); line-height: 1.06; letter-spacing: -0.035em">Start free. Upgrade when it clicks.</h2>
+<p class="rise d3" style="margin: 0; color: var(--muted)">Pay once, keep it. No subscriptions.</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 18px; align-items: stretch">
+<div class="card rise d4" style="display: flex; flex-direction: column; gap: 22px; padding: 32px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface)">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 21px">Free</h3>
+<p style="margin: 0; color: var(--muted)">See what your PC is leaving on the table.</p>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 46px; letter-spacing: -0.04em">€0</span><span style="color: var(--muted)">forever</span></div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Full hardware scan</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Essential tweaks</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>One-click restore</li>
+</ul>
+<button class="btn" onClick="{{goDownload}}" style="margin-top: auto; min-height: 50px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Download free</button>
+</div>
+
+<div class="card rise d5" style="position: relative; display: flex; flex-direction: column; gap: 22px; padding: 32px; border: 1.5px solid var(--accent); border-radius: 24px; background: var(--surface); box-shadow: 0 30px 70px -34px var(--glow)">
+<span style="position: absolute; top: 26px; right: 26px; padding: 5px 12px; border-radius: 999px; background: var(--accent); color: #FFFFFF; font-size: 12px; font-weight: 700; letter-spacing: 0.06em">BEST VALUE</span>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 21px">Ultimate</h3>
+<p style="margin: 0; color: var(--muted)">Everything, on every PC in the house.</p>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 46px; letter-spacing: -0.04em">€24.99</span><span style="color: var(--muted)">one-time</span></div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Everything in Pro</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Lifetime updates</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Up to [N] PCs</li>
+</ul>
+<button class="btn btn-primary" style="margin-top: auto; min-height: 50px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Buy Ultimate</button>
+</div>
+<div class="card rise d6" style="display: flex; flex-direction: column; gap: 22px; padding: 32px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface)">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<h3 style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 600; font-size: 21px">Pro</h3>
+<p style="margin: 0; color: var(--muted)">The full profile, kept tuned for you.</p>
+</div>
+<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 46px; letter-spacing: -0.04em">€14.99</span><span style="color: var(--muted)">one-time</span></div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Everything in Free</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Full hardware-matched profile</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Per-game profiles &amp; driver check</li>
+<li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Scheduled tune-ups · 1 PC</li>
+</ul>
+<button class="btn" style="margin-top: auto; min-height: 50px; border: 1px solid var(--text); border-radius: 999px; background: transparent; color: var(--text); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Buy Pro</button>
+</div>
+
+</div>
+<p class="rise d7" style="margin: 0; text-align: center; font-size: 14px; color: var(--muted)">Prices in euros (EUR). Your license key arrives by email right after checkout.</p>
+</section>
+
+<section id="download" class="sec" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; align-items: stretch">
+<div class="rise d1" style="position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 24px; padding: clamp(30px, 5vw, 52px); border: 1px solid var(--line); border-radius: 28px; background: var(--surface)">
+<img src="./assets/c3ef71e4eb6b70020b1c08ce5c4632ac.png" alt="" style="position: relative; width: 72px; height: 72px; border-radius: 20px; display: block">
+<div style="position: relative; display: flex; flex-direction: column; gap: 12px">
+<h2 style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(30px, 3.8vw, 48px); line-height: 1.06; letter-spacing: -0.035em">Download LunarTweaks</h2>
+<p style="margin: 0; max-width: 440px; color: var(--muted)">One installer for every plan. Start on Free, then unlock Pro or Ultimate with your license key — no reinstall.</p>
+</div>
+<button class="btn btn-primary" style="position: relative; align-self: flex-start; display: inline-flex; align-items: center; gap: 12px; min-height: 58px; padding: 0 30px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-family: inherit; font-size: 17px; font-weight: 700; cursor: pointer">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"></path><path d="M7 10l5 5 5-5"></path><path d="M5 20h14"></path></svg>
+Download for Windows</button>
+<div style="position: relative; display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; font-weight: 600; color: var(--muted)">
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--surface2)">v[VERSION]</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--surface2)">[FILE SIZE]</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: var(--surface2)">Windows 10 / 11 · 64-bit</span>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 18px">
+<div class="card rise d3" style="display: flex; gap: 18px; padding: 26px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="flex: none; width: 42px; height: 42px; border-radius: 12px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 700; color: var(--accent-ink)">1</span>
+<div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 600">Run the installer</h3><p style="margin: 0; color: var(--muted)">Takes under a minute. No bundled extras.</p></div>
+</div>
+<div class="card rise d4" style="display: flex; gap: 18px; padding: 26px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="flex: none; width: 42px; height: 42px; border-radius: 12px; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 700; color: var(--accent-ink)">2</span>
+<div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 600">Scan your PC</h3><p style="margin: 0; color: var(--muted)">LunarTweaks reads your hardware and shows the profile before changing anything.</p></div>
+</div>
+<div class="card rise d5" style="display: flex; gap: 18px; padding: 26px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface)">
+<span style="flex: none; width: 42px; height: 42px; border-radius: 12px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-weight: 700; color: #FFFFFF">3</span>
+<div style="display: flex; flex-direction: column; gap: 4px"><h3 style="margin: 0; font-family: 'Sora', sans-serif; font-size: 18px; font-weight: 600">Bought a plan? Activate it</h3><p style="margin: 0; color: var(--muted)">Paste your license key under Settings → License and paid features unlock instantly.</p></div>
+</div>
+</div>
+</section>
+
+</main>
+
+<footer style="position: relative; z-index: 2">
+<div style="max-width: 1200px; margin: 0 auto; padding: 22px clamp(16px, 4vw, 40px) 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; font-size: 14px; color: var(--muted)">
+<span>© 2026 LunarTweaks</span>
+<a href="#privacy" style="color: var(--muted); text-decoration: none">Privacy</a>
+<a href="#terms" style="color: var(--muted); text-decoration: none">Terms</a>
+<a href="#contact" style="color: var(--muted); text-decoration: none">Contact</a>
+<span style="margin-left: auto; font-family: 'Sora', sans-serif; font-weight: 600; letter-spacing: 0.08em"><span style="color: var(--text)">{{pageNum}}</span> / 04</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3600}}'>
+class Component extends DCLogic {
+  componentDidMount() {
+    const win = window;
+    const doc = document;
+    const root = doc.documentElement;
+    let target = win.scrollY;
+    let current = win.scrollY;
+    let raf = 0;
+    let tween = null;
+    const maxY = () => Math.max(0, root.scrollHeight - win.innerHeight);
+    const clamp = (y) => Math.max(0, Math.min(maxY(), y));
+    const loop = () => {
+      if (tween) {
+        const t = Math.min(1, (performance.now() - tween.t0) / tween.dur);
+        const k = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        current = tween.from + (tween.to - tween.from) * k;
+        win.scrollTo(0, current);
+        if (t >= 1) { tween = null; target = current; raf = 0; return; }
+      } else {
+        current += (target - current) * 0.1;
+        if (Math.abs(target - current) < 0.5) {
+          current = target;
+          win.scrollTo(0, current);
+          raf = 0;
+          return;
+        }
+        win.scrollTo(0, current);
+      }
+      raf = win.requestAnimationFrame(loop);
+    };
+    const start = () => { if (!raf) raf = win.requestAnimationFrame(loop); };
+
+    // Smooth, eased mouse-wheel scrolling (skipped while editing on the design canvas).
+    this._onWheel = (e) => {
+      if (e.ctrlKey || e.defaultPrevented) return;
+      if (root.hasAttribute('data-dc-canvas')) return;
+      if (maxY() <= 0) return;
+      e.preventDefault();
+      if (tween) { tween = null; current = win.scrollY; target = current; }
+      if (!raf) { current = win.scrollY; target = current; }
+      const dy = e.deltaMode === 1 ? e.deltaY * 40 : (e.deltaMode === 2 ? e.deltaY * win.innerHeight : e.deltaY);
+      target = clamp(target + dy);
+      start();
+    };
+
+    // Eased glide to a position, used by the nav buttons.
+    this._scrollToY = (y) => {
+      const to = clamp(y);
+      const from = win.scrollY;
+      const dist = Math.abs(to - from);
+      if (dist < 2) return;
+      tween = { from: from, to: to, t0: performance.now(), dur: Math.min(1150, Math.max(550, dist * 0.42)) };
+      current = from;
+      start();
+    };
+
+    // Follow the scroll: which section are we in?
+    const ids = ['home', 'features', 'pricing', 'download'];
+    this._onScroll = () => {
+      if (!raf) { current = win.scrollY; target = current; }
+      const line = win.innerHeight * 0.42;
+      let active = 'home';
+      ids.forEach((id) => {
+        const el = doc.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) active = id;
+      });
+      if (maxY() > 0 && win.scrollY >= maxY() - 4) active = 'download';
+      if (active !== this._active) {
+        this._active = active;
+        if (this._activate) this._activate(active);
+      }
+    };
+
+    try {
+      win.addEventListener('wheel', this._onWheel, { passive: false });
+      win.addEventListener('scroll', this._onScroll, { passive: true });
+    } catch (err) {}
+
+    // Slide each block in as it scrolls into view.
+    const canAnim = typeof root.animate === 'function' && 'IntersectionObserver' in win;
+    if (canAnim && !root.hasAttribute('data-dc-canvas')) {
+      const holds = new Map();
+      const rises = Array.prototype.slice.call(doc.querySelectorAll('.stage .rise'));
+      rises.forEach((el) => holds.set(el, el.animate([{ opacity: 0 }, { opacity: 0 }], { duration: 1e9, fill: 'forwards' })));
+      this._io = new win.IntersectionObserver((entries) => {
+        const shown = entries
+          .filter((en) => en.isIntersecting && holds.has(en.target))
+          .map((en) => en.target)
+          .sort((a, b) => (a.compareDocumentPosition(b) & 4) ? -1 : 1);
+        shown.forEach((el, i) => {
+          const hold = holds.get(el);
+          holds.delete(el);
+          this._io.unobserve(el);
+          el.animate([
+            { opacity: 0, transform: 'translate3d(0, 38px, 0) scale(.98)', filter: 'blur(5px)' },
+            { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)', filter: 'blur(0px)' }
+          ], { duration: 1000, delay: Math.min(i, 8) * 70, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'backwards' });
+          hold.cancel();
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+      rises.forEach((el) => this._io.observe(el));
+    }
+    this._onScroll();
+  }
+
+  componentWillUnmount() {
+    try {
+      window.removeEventListener('wheel', this._onWheel);
+      window.removeEventListener('scroll', this._onScroll);
+      if (this._io) this._io.disconnect();
+    } catch (err) {}
+    (this._timers || []).forEach((t) => clearTimeout(t));
+  }
+
+  renderVals() {
+    const st = this.state || {};
+    const dark = st.dark ?? true;
+    const VIEWS = ['home', 'features', 'pricing', 'download'];
+    const active = st.tabView || 'home';
+    const idx = VIEWS.indexOf(active);
+    const later = (fn, ms) => { this._timers = this._timers || []; this._timers.push(setTimeout(fn, ms)); };
+    const grab = (doc, sel) => Array.prototype.slice.call(doc.querySelectorAll(sel));
+    const tf = (el) => { try { return (el.ownerDocument.defaultView || window).getComputedStyle(el).transform; } catch (err) { return 'none'; } };
+
+    // Tab highlight and background lights glide from wherever they are now.
+    const captureSliders = (doc) => grab(doc, '.glowpos, .tab-ind').map((el) => {
+      const from = tf(el);
+      el.getAnimations().forEach((a) => a.cancel());
+      return { el: el, from: from };
+    });
+    const glide = (items) => items.forEach((it) => {
+      const to = tf(it.el);
+      if (it.from === to) return;
+      const isTab = it.el.classList.contains('tab-ind');
+      it.el.animate([{ transform: it.from }, { transform: to }], {
+        duration: isTab ? 550 : 2400,
+        easing: isTab ? 'cubic-bezier(.65,0,.35,1)' : 'cubic-bezier(.45,0,.2,1)'
+      });
+    });
+    this._activate = (v) => {
+      const doc = document;
+      const sliders = typeof doc.documentElement.animate === 'function' ? captureSliders(doc) : [];
+      this.setState({ tabView: v }, () => glide(sliders));
+    };
+
+    const go = (v) => (e) => {
+      const doc = (e && e.currentTarget && e.currentTarget.ownerDocument) || document;
+      const win = doc.defaultView || window;
+      const el = doc.getElementById(v);
+      if (!el) return;
+      const header = doc.querySelector('header');
+      const off = header ? header.getBoundingClientRect().height : 0;
+      const y = v === 'home' ? 0 : el.getBoundingClientRect().top + win.scrollY - off - 24;
+      if (this._scrollToY) this._scrollToY(y);
+      else win.scrollTo({ top: y, behavior: 'smooth' });
+    };
+
+    const toggleTheme = (e) => {
+      if (this._tBusy) return;
+      const curDark = this.state && this.state.dark !== undefined ? this.state.dark : dark;
+      const next = !curDark;
+      const btn = e && e.currentTarget;
+      const doc = (btn && btn.ownerDocument) || document;
+      const win = doc.defaultView || window;
+      let x = win.innerWidth - 60, y = 40;
+      try { const b = btn.getBoundingClientRect(); x = b.left + b.width / 2; y = b.top + b.height / 2; } catch (err) {}
+      const dist = Math.hypot(Math.max(x, win.innerWidth - x), Math.max(y, win.innerHeight - y));
+
+      // Reveal the new theme in a soft circle growing from the button.
+      if (typeof doc.startViewTransition === 'function') {
+        try {
+          if (!doc.getElementById('lt-vt-style')) {
+            const s = doc.createElement('style');
+            s.id = 'lt-vt-style';
+            // The floating logo is captured on its own and shown live, so it keeps floating during the reveal.
+            s.textContent = '::view-transition-group(root){animation-duration:1.3s}::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}::view-transition-old(root){z-index:1}::view-transition-new(root){z-index:2}::view-transition-group(lt-logo){animation:none}::view-transition-old(lt-logo){display:none}::view-transition-new(lt-logo){animation:none}';
+            doc.head.appendChild(s);
+          }
+        } catch (err) {}
+        const S = Math.ceil((dist * 2) / 0.55) + 40;
+        const mask = 'radial-gradient(circle closest-side, #000 0%, #000 55%, rgba(0,0,0,0) 100%)';
+        const frame = (sz) => ({
+          maskImage: mask, webkitMaskImage: mask,
+          maskRepeat: 'no-repeat', webkitMaskRepeat: 'no-repeat',
+          maskSize: sz + 'px ' + sz + 'px', webkitMaskSize: sz + 'px ' + sz + 'px',
+          maskPosition: (x - sz / 2) + 'px ' + (y - sz / 2) + 'px', webkitMaskPosition: (x - sz / 2) + 'px ' + (y - sz / 2) + 'px'
+        });
+        let t = null;
+        this._tBusy = true;
+        try {
+          t = doc.startViewTransition(() => new Promise((res) => this.setState({ dark: next, nextDark: next, vt: true }, res)));
+        } catch (err) { t = null; }
+        if (t) {
+          t.ready.then(() => {
+            doc.documentElement.animate([frame(0), frame(S)], {
+              duration: 1300, easing: 'cubic-bezier(.45,0,.2,1)', fill: 'both',
+              pseudoElement: '::view-transition-new(root)'
+            });
+          }).catch(() => {});
+          const done = () => { this._tBusy = false; this.setState({ vt: false }); };
+          t.finished.then(done, done);
+          return;
+        }
+        this._tBusy = false;
+      }
+
+      // Fallback for browsers without view transitions: a soft wash from the button.
+      const size = Math.ceil((dist * 2) / 0.5) + 60;
+      this._tBusy = true;
+      this.setState({ wash: 'grow', wx: x, wy: y, wsize: size, wcolor: next ? '#07060D' : '#F6F4FB', nextDark: next });
+      later(() => {
+        this.setState({ dark: next, vt: true, wash: 'fade' });
+        later(() => { this.setState({ wash: 'idle', vt: false }); this._tBusy = false; }, 950);
+      }, 900);
+    };
+
+    const wash = st.wash || 'idle';
+    const wsize = st.wsize || 0;
+    const wcolor = st.wcolor || '#07060D';
+    const GA = { home: 'translate(0, 0)', features: 'translate(48vw, 12vh)', pricing: 'translate(80vw, -6vh)', download: 'translate(16vw, 42vh)' };
+    const GB = { home: 'translate(0, 0)', features: 'translate(-44vw, -20vh)', pricing: 'translate(-78vw, 8vh)', download: 'translate(-30vw, -46vh)' };
+    const shownDark = st.nextDark !== undefined ? st.nextDark : dark;
+
+    return {
+      themeClass: dark ? 'theme-dark' : 'theme-light',
+      vtClass: st.vt ? 'vt' : '',
+      washLeft: ((st.wx || 0) - wsize / 2) + 'px',
+      washTop: ((st.wy || 0) - wsize / 2) + 'px',
+      washSize: wsize + 'px',
+      washBg: 'radial-gradient(circle closest-side, ' + wcolor + ' 0%, ' + wcolor + ' 50%, rgba(0,0,0,0) 100%)',
+      washTransform: wash === 'idle' ? 'scale(0)' : 'scale(1)',
+      washOpacity: wash === 'fade' ? '0' : (wash === 'grow' ? '0.97' : '1'),
+      washTransition: wash === 'grow' ? 'transform .9s cubic-bezier(.55,0,.3,1), opacity .4s ease' : (wash === 'fade' ? 'opacity .95s cubic-bezier(.4,0,.2,1)' : 'none'),
+      glowA: GA[active],
+      glowB: GB[active],
+      tgClass: shownDark ? '' : 'is-light',
+      tgLabel: shownDark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: toggleTheme,
+      goHome: go('home'),
+      goFeatures: go('features'),
+      goPricing: go('pricing'),
+      goDownload: go('download'),
+      tabX: 'translateX(calc(var(--tabw) * ' + idx + '))',
+      tabHome: active === 'home' ? 'on' : '',
+      tabFeatures: active === 'features' ? 'on' : '',
+      tabPricing: active === 'pricing' ? 'on' : '',
+      tabDownload: active === 'download' ? 'on' : '',
+      curHome: active === 'home' ? 'location' : 'false',
+      curFeatures: active === 'features' ? 'location' : 'false',
+      curPricing: active === 'pricing' ? 'location' : 'false',
+      curDownload: active === 'download' ? 'location' : 'false',
+      pageNum: '0' + (idx + 1)
+    };
+  }
+}
+</script>
+</body>
+</html>
