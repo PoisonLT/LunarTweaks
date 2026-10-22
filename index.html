@@ -189,7 +189,7 @@ Download free</button>
 <li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Lifetime updates</li>
 <li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Up to [N] PCs</li>
 </ul>
-<button class="btn btn-primary" style="margin-top: auto; min-height: 50px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Buy Ultimate</button>
+<a class="btn btn-primary" href="{{ultimateHref}}" target="_blank" rel="noopener" title="Opens secure checkout by Polar" style="margin-top: auto; display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 50px; border: 0; border-radius: 999px; background: var(--accent); color: var(--on-accent); text-decoration: none; font-size: 16px; font-weight: 700; cursor: pointer">Buy Ultimate</a>
 </div>
 <div class="card rise d6" style="display: flex; flex-direction: column; gap: 22px; padding: 32px; border: 1px solid var(--line); border-radius: 24px; background: var(--surface)">
 <div style="display: flex; flex-direction: column; gap: 6px">
@@ -203,7 +203,7 @@ Download free</button>
 <li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Per-game profiles &amp; driver check</li>
 <li style="display: flex; gap: 12px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 4px; color: var(--accent-ink)"><path d="M5 12l5 5 9-10"></path></svg>Scheduled tune-ups · 1 PC</li>
 </ul>
-<button class="btn" style="margin-top: auto; min-height: 50px; border: 1px solid var(--text); border-radius: 999px; background: transparent; color: var(--text); font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Buy Pro</button>
+<a class="btn" href="{{proHref}}" target="_blank" rel="noopener" title="Opens secure checkout by Polar" style="margin-top: auto; display: flex; align-items: center; justify-content: center; box-sizing: border-box; min-height: 50px; border: 1px solid var(--text); border-radius: 999px; background: transparent; color: var(--text); text-decoration: none; font-size: 16px; font-weight: 700; cursor: pointer">Buy Pro</a>
 </div>
 
 </div>
@@ -257,7 +257,7 @@ Download for Windows</button>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3600}}'>
+<script type="text/x-dc" data-dc-script data-props='{"proCheckoutUrl":{"editor":"text","default":"https://buy.polar.sh/polar_cl_sYRW6hzBeNFjvvFFbDI0po4a5xD0by3UqiyxF3fZ9hu","section":"Polar"},"ultimateCheckoutUrl":{"editor":"text","default":"https://buy.polar.sh/polar_cl_PDLj3ocU4CwV0ZPgpPJnZS5vPvWgLziiRL90Q0AHNx9","section":"Polar"},"$preview":{"width":1440,"height":3600}}'>
 class Component extends DCLogic {
   componentDidMount() {
     const win = window;
@@ -506,6 +506,12 @@ class Component extends DCLogic {
     const GB = { home: 'translate(0, 0)', features: 'translate(-44vw, -20vh)', pricing: 'translate(-78vw, 8vh)', download: 'translate(-30vw, -46vh)' };
     const shownDark = st.nextDark !== undefined ? st.nextDark : dark;
 
+    const polarLink = (url) => {
+      const u = (url || '').trim();
+      if (!u) return '#pricing';
+      return u + (u.indexOf('?') >= 0 ? '&' : '?') + 'theme=' + (dark ? 'dark' : 'light');
+    };
+
     return {
       themeClass: dark ? 'theme-dark' : 'theme-light',
       vtClass: st.vt ? 'vt' : '',
@@ -534,7 +540,10 @@ class Component extends DCLogic {
       curFeatures: active === 'features' ? 'location' : 'false',
       curPricing: active === 'pricing' ? 'location' : 'false',
       curDownload: active === 'download' ? 'location' : 'false',
-      pageNum: '0' + (idx + 1)
+      pageNum: '0' + (idx + 1),
+      // Polar checkout links; the checkout opens in the site's current light/dark theme.
+      proHref: polarLink(this.props.proCheckoutUrl ?? 'https://buy.polar.sh/polar_cl_sYRW6hzBeNFjvvFFbDI0po4a5xD0by3UqiyxF3fZ9hu'),
+      ultimateHref: polarLink(this.props.ultimateCheckoutUrl ?? 'https://buy.polar.sh/polar_cl_PDLj3ocU4CwV0ZPgpPJnZS5vPvWgLziiRL90Q0AHNx9')
     };
   }
 }
