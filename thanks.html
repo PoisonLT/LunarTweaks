@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Thanks · LunarTweaks</title>
+<link rel="icon" href="./favicon.ico?v=2" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Manrope:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F6F4FB;--surface:#FFFFFF;--surface2:#EFEBF8;--line:#E2DCEF;--text:#15111F;--muted:#5A546E;--accent:#6D28D9;--accent-ink:#6D28D9}
+@media (prefers-color-scheme: dark){:root{--bg:#07060D;--surface:#110F1C;--surface2:#1A1729;--line:#262139;--text:#F2EFFA;--muted:#A49EBC;--accent:#7C3AED;--accent-ink:#C4A1FF}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:var(--bg);color:var(--text);font:16px/1.6 'Manrope',system-ui,sans-serif}
+main{width:100%;max-width:560px;padding:clamp(24px,5vw,44px);border:1px solid var(--line);border-radius:28px;background:var(--surface)}
+h1{margin:0 0 8px;font:700 clamp(28px,5vw,38px)/1.1 'Sora',sans-serif;letter-spacing:-0.03em}
+p{margin:0 0 14px;color:var(--muted)}
+.key{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0;padding:16px;border-radius:16px;background:var(--surface2)}
+code{flex:1;min-width:0;overflow-wrap:anywhere;font:700 clamp(17px,4vw,21px)/1.3 ui-monospace,Consolas,monospace;letter-spacing:0.04em}
+button,a.btn{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:var(--accent);color:#fff;font:700 15px 'Manrope',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+a{color:var(--accent-ink)}
+ol{margin:0 0 18px;padding-left:20px;color:var(--muted)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <section id="loading"><h1>Getting your key…</h1><p>This takes a few seconds.</p></section>
+  <section id="done" hidden>
+    <h1>Thanks! You're Pro.</h1>
+    <p id="plan"></p>
+    <div class="key"><code id="key"></code><button id="copy" type="button">Copy</button></div>
+    <ol>
+      <li>Open LunarTweaks (2.1.1 or newer).</li>
+      <li>Paste the key and click <strong>Activate</strong>.</li>
+    </ol>
+    <p id="mailed"></p>
+    <a class="btn" href="./#download">Download LunarTweaks</a>
+  </section>
+  <section id="wait" hidden><h1>Payment is processing</h1><p>Your bank is still confirming the payment. Your key will be emailed to you as soon as it goes through, usually within a few minutes.</p></section>
+  <section id="error" hidden><h1>We couldn't show your key here</h1><p id="errtext">If you paid, your key is on its way to your email. You can also get it again on the <a href="./lost-key.html">lost key page</a>.</p></section>
+</main>
+<script>
+// Where the key server lives. Change this if the API runs on another address (e.g. https://api.lunartweaks.se).
+const API = '/api';
+const show = id => ['loading','done','wait','error'].forEach(s => document.getElementById(s).hidden = s !== id);
+const sid = new URLSearchParams(location.search).get('session_id') || '';
+async function load(tries) {
+  try {
+    const r = await fetch(API + '/session.php?session_id=' + encodeURIComponent(sid), {cache: 'no-store'});
+    const j = await r.json();
+    if (j.status === 'ok') {
+      document.getElementById('key').textContent = j.key;
+      document.getElementById('plan').textContent = 'LunarTweaks ' + j.plan + ' works on ' + j.devices + (j.devices > 1 ? ' PCs.' : ' PC.');
+      document.getElementById('mailed').textContent = (j.email && j.emailed !== false)
+        ? 'We also emailed it to ' + j.email + '.'
+        : 'Save this key somewhere safe. You need it to activate Pro on a new PC.';
+      show('done');
+      return;
+    }
+    if (j.status === 'pending') return tries > 0 ? setTimeout(() => load(tries - 1), 4000) : show('wait');
+    if (j.status === 'not_found' && tries > 0) return setTimeout(() => load(tries - 1), 3000);
+  } catch (e) {
+    if (tries > 0) return setTimeout(() => load(tries - 1), 3000);
+  }
+  show('error');
+}
+if (/^cs_(test|live)_/.test(sid)) load(5); else show('error');
+document.getElementById('copy').addEventListener('click', async e => {
+  try { await navigator.clipboard.writeText(document.getElementById('key').textContent); e.target.textContent = 'Copied'; }
+  catch (_) { getSelection().selectAllChildren(document.getElementById('key')); }
+});
+</script>
+</body>
+</html>

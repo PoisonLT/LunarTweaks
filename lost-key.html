@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get your key again · LunarTweaks</title>
+<link rel="icon" href="./favicon.ico?v=2" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Manrope:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#F6F4FB;--surface:#FFFFFF;--surface2:#EFEBF8;--line:#E2DCEF;--text:#15111F;--muted:#5A546E;--accent:#6D28D9;--accent-ink:#6D28D9}
+@media (prefers-color-scheme: dark){:root{--bg:#07060D;--surface:#110F1C;--surface2:#1A1729;--line:#262139;--text:#F2EFFA;--muted:#A49EBC;--accent:#7C3AED;--accent-ink:#C4A1FF}}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px;background:var(--bg);color:var(--text);font:16px/1.6 'Manrope',system-ui,sans-serif}
+main{width:100%;max-width:520px;padding:clamp(24px,5vw,44px);border:1px solid var(--line);border-radius:28px;background:var(--surface)}
+h1{margin:0 0 8px;font:700 clamp(26px,5vw,34px)/1.1 'Sora',sans-serif;letter-spacing:-0.03em}
+p{margin:0 0 16px;color:var(--muted)}
+label{display:block;margin-bottom:6px;font-weight:600}
+form{display:flex;flex-direction:column;gap:12px}
+input{min-height:48px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);color:var(--text);font:inherit}
+button{min-height:48px;border:0;border-radius:999px;background:var(--accent);color:#fff;font:700 16px 'Manrope',sans-serif;cursor:pointer}
+a{color:var(--accent-ink)}
+#status{min-height:1.6em;margin:14px 0 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>Get your key again</h1>
+  <p>Enter the email you used at checkout. We'll send every LunarTweaks key bought with it.</p>
+  <form id="f">
+    <div><label for="email">Email</label><input id="email" type="email" autocomplete="email" required style="width:100%"></div>
+    <button type="submit">Email my key</button>
+  </form>
+  <p id="status" role="status"></p>
+  <p><a href="./">Back to lunartweaks.se</a></p>
+</main>
+<script>
+// Where the key server lives. Change this if the API runs on another address (e.g. https://api.lunartweaks.se).
+const API = '/api';
+const status = document.getElementById('status');
+document.getElementById('f').addEventListener('submit', async e => {
+  e.preventDefault();
+  status.textContent = 'Sending…';
+  try {
+    const r = await fetch(API + '/lost-key.php', {method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email: document.getElementById('email').value})});
+    const j = await r.json();
+    status.textContent = j.status === 'sent'
+      ? "If that address bought LunarTweaks, the key is on its way. Check your spam folder too."
+      : (j.error || 'Something went wrong. Try again in a minute.');
+  } catch (_) { status.textContent = "Couldn't reach the key server. Try again in a minute."; }
+});
+</script>
+</body>
+</html>

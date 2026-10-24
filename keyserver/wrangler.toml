@@ -1,0 +1,33 @@
+# LunarTweaks key server (Cloudflare Worker). Answers lunartweaks.se/api/* for the app, Stripe and the website.
+name = "lunartweaks-keys"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+
+routes = [
+  { pattern = "lunartweaks.se/api/*", zone_name = "lunartweaks.se" },
+  { pattern = "www.lunartweaks.se/api/*", zone_name = "lunartweaks.se" },
+]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lunartweaks-keys"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+[vars]
+SITE_URL = "https://lunartweaks.se"
+MAIL_FROM = "noreply@lunartweaks.se"
+DEFAULT_PLAN = "pro"
+# Which Stripe Payment Link (or amount in cents) gives which plan.
+PLANS = '{"pro":{"devices":1,"payment_links":["plink_1UU9YoDsykIw9wa9qcHPlk1Y"],"amounts":[1499]},"duo":{"devices":2,"payment_links":["plink_1UU9ZPDsykIw9wa9fDLX8L8A"],"amounts":[1999]}}'
+
+# Optional: emails the key to buyers. Needs Cloudflare Email Service (Workers Paid plan) with lunartweaks.se onboarded.
+# [[send_email]]
+# name = "EMAIL"
+
+# Secrets — set in the Cloudflare dashboard (Worker → Settings → Variables and Secrets), never here:
+#   SIGNING_KEY            the whole signing_key_pem block from OWNER\private\keyserver-config.php
+#   STRIPE_WEBHOOK_SECRET  whsec_...
+#   STRIPE_SECRET_KEY      rk_... (restricted key, Checkout Sessions: Read)
+#   ADMIN_TOKEN            password for /api/admin.php
+#   RATE_SALT              any long random text
