@@ -19,7 +19,7 @@ SITE_URL = "https://lunartweaks.se"
 MAIL_FROM = "noreply@lunartweaks.se"
 DEFAULT_PLAN = "pro"
 # Which Stripe Payment Link (or amount in cents) gives which plan.
-PLANS = '{"pro":{"devices":1,"payment_links":["plink_1UUAxdDSDB3v7Oe0lpePzHVh","plink_1UU9YoDsykIw9wa9qcHPlk1Y"],"amounts":[1499]},"duo":{"devices":2,"payment_links":["plink_1UUAyqDSDB3v7Oe0dUnwNKIi","plink_1UU9ZPDsykIw9wa9fDLX8L8A"],"amounts":[1999]}}'
+PLANS = '{"pro":{"devices":1,"payment_links":["plink_1UUAxdDSDB3v7Oe0lpePzHVh","plink_1UU9YoDsykIw9wa9qcHPlk1Y"],"amounts":[1499]},"duo":{"devices":1,"keys":2,"payment_links":["plink_1UUAyqDSDB3v7Oe0dUnwNKIi","plink_1UU9ZPDsykIw9wa9fDLX8L8A"],"amounts":[1999]}}'
 
 # Optional: emails the key to buyers. Needs Cloudflare Email Service (Workers Paid plan) with lunartweaks.se onboarded.
 # [[send_email]]

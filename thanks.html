@@ -16,7 +16,8 @@ body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:c
 main{width:100%;max-width:560px;padding:clamp(24px,5vw,44px);border:1px solid var(--line);border-radius:28px;background:var(--surface)}
 h1{margin:0 0 8px;font:700 clamp(28px,5vw,38px)/1.1 'Sora',sans-serif;letter-spacing:-0.03em}
 p{margin:0 0 14px;color:var(--muted)}
-.key{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:22px 0;padding:16px;border-radius:16px;background:var(--surface2)}
+#keys{display:flex;flex-direction:column;gap:10px;margin:22px 0}
+.key{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0;padding:16px;border-radius:16px;background:var(--surface2)}
 code{flex:1;min-width:0;overflow-wrap:anywhere;font:700 clamp(17px,4vw,21px)/1.3 ui-monospace,Consolas,monospace;letter-spacing:0.04em}
 button,a.btn{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:var(--accent);color:#fff;font:700 15px 'Manrope',sans-serif;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
 a{color:var(--accent-ink)}
@@ -30,10 +31,10 @@ ol{margin:0 0 18px;padding-left:20px;color:var(--muted)}
   <section id="done" hidden>
     <h1>Thanks! You're Pro.</h1>
     <p id="plan"></p>
-    <div class="key"><code id="key"></code><button id="copy" type="button">Copy</button></div>
+    <div id="keys"></div>
     <ol>
       <li>Open LunarTweaks (2.1.1 or newer).</li>
-      <li>Paste the key and click <strong>Activate</strong>.</li>
+      <li id="step2">Paste the key and click <strong>Activate</strong>.</li>
     </ol>
     <p id="mailed"></p>
     <a class="btn" href="./#download">Download LunarTweaks</a>
@@ -51,11 +52,28 @@ async function load(tries) {
     const r = await fetch(API + '/session.php?session_id=' + encodeURIComponent(sid), {cache: 'no-store'});
     const j = await r.json();
     if (j.status === 'ok') {
-      document.getElementById('key').textContent = j.key;
-      document.getElementById('plan').textContent = 'LunarTweaks ' + j.plan + ' works on ' + j.devices + (j.devices > 1 ? ' PCs.' : ' PC.');
+      const keys = Array.isArray(j.keys) && j.keys.length ? j.keys : [j.key];
+      const many = keys.length > 1;
+      const box = document.getElementById('keys');
+      box.textContent = '';
+      keys.forEach((k, i) => {
+        const row = document.createElement('div'); row.className = 'key';
+        const code = document.createElement('code'); code.textContent = k;
+        const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = 'Copy';
+        btn.setAttribute('aria-label', many ? 'Copy key ' + (i + 1) : 'Copy key');
+        btn.addEventListener('click', async () => {
+          try { await navigator.clipboard.writeText(k); btn.textContent = 'Copied'; }
+          catch (_) { getSelection().selectAllChildren(code); }
+        });
+        row.append(code, btn); box.append(row);
+      });
+      document.getElementById('plan').textContent = many
+        ? 'LunarTweaks ' + j.plan + ': ' + keys.length + ' keys, one for each PC.'
+        : 'LunarTweaks ' + j.plan + ' works on ' + j.devices + (j.devices > 1 ? ' PCs.' : ' PC.');
+      if (many) document.getElementById('step2').innerHTML = 'On each PC, paste <strong>one</strong> of the keys and click <strong>Activate</strong>.';
       document.getElementById('mailed').textContent = (j.email && j.emailed !== false)
-        ? 'We also emailed it to ' + j.email + '.'
-        : 'Save this key somewhere safe. You need it to activate Pro on a new PC.';
+        ? 'We also emailed ' + (many ? 'them' : 'it') + ' to ' + j.email + '.'
+        : 'Save ' + (many ? 'these keys' : 'this key') + ' somewhere safe. You need ' + (many ? 'them' : 'it') + ' to activate Pro on a new PC.';
       show('done');
       return;
     }
@@ -67,10 +85,6 @@ async function load(tries) {
   show('error');
 }
 if (/^cs_(test|live)_/.test(sid)) load(5); else show('error');
-document.getElementById('copy').addEventListener('click', async e => {
-  try { await navigator.clipboard.writeText(document.getElementById('key').textContent); e.target.textContent = 'Copied'; }
-  catch (_) { getSelection().selectAllChildren(document.getElementById('key')); }
-});
 </script>
 </body>
 </html>

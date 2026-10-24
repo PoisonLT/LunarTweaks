@@ -105,27 +105,48 @@ function planForSession(env, s) {
 }
 const sessionPaid = s => ['paid', 'no_payment_required'].includes(s.payment_status);
 
-async function issueForSession(env, s) {
-  let row = await keyForSession(env, s.id);
-  if (!row) row = await createKey(env, planForSession(env, s), s.customer_details?.email || null, s.id,
-                                  typeof s.payment_intent === 'string' ? s.payment_intent : null);
-  if (!row.emailed && row.email && (await sendKeyEmail(env, row)))
-    await (await db(env)).prepare('UPDATE lt_keys SET emailed = 1 WHERE key_hash = ?').bind(row.key_hash).run();
-  return row;
+// How many separate keys a plan gives (Duo: 2 keys, one PC each). Configured with "keys" in PLANS.
+const planKeyCount = (env, plan) => Math.max(1, (plans(env)[plan] || {}).keys | 0 || 1);
+
+// All keys bought in one checkout. The first key uses the session id, extra keys "<session id>#2", "#3", ...
+async function keysForSession(env, sessionId) {
+  const { results } = await (await db(env)).prepare('SELECT * FROM lt_keys WHERE session_id = ? OR session_id LIKE ? ORDER BY session_id')
+    .bind(sessionId, sessionId + '#%').all();
+  return results;
 }
 
-// Email needs the optional EMAIL binding (Cloudflare Email Service). Without it, buyers get the key on the thank-you page.
-async function sendKeyEmail(env, row) {
-  if (!env.EMAIL || !row.email) return false;
+// Gives a paid Checkout Session its keys (once) and emails them (once).
+async function issueForSession(env, s) {
+  let rows = await keysForSession(env, s.id);
+  if (!rows.length) {
+    const plan = planForSession(env, s);
+    const email = s.customer_details?.email || null;
+    const pi = typeof s.payment_intent === 'string' ? s.payment_intent : null;
+    for (let i = 1; i <= planKeyCount(env, plan); i++) await createKey(env, plan, email, i === 1 ? s.id : `${s.id}#${i}`, pi);
+    rows = await keysForSession(env, s.id);
+  }
+  if (rows.some(r => !r.emailed) && rows[0].email && (await sendKeyEmail(env, rows))) {
+    const d = await db(env);
+    for (const r of rows) await d.prepare('UPDATE lt_keys SET emailed = 1 WHERE key_hash = ?').bind(r.key_hash).run();
+  }
+  return rows;
+}
+
+// Email needs the optional EMAIL binding (Cloudflare Email Service). Without it, buyers get the keys on the thank-you page.
+// rows: one or more keys for the same email address.
+async function sendKeyEmail(env, rows) {
+  rows = Array.isArray(rows) ? rows : [rows];
+  if (!env.EMAIL || !rows.length || !rows[0].email) return false;
   const site = String(env.SITE_URL || 'https://lunartweaks.se').replace(/\/$/, '');
-  const n = row.devices;
-  const text = `Thanks for buying LunarTweaks ${planName(row.plan)}!\n\nYour license key:\n\n    ${row.license_key}\n\n` +
-    `To activate: open LunarTweaks, paste the key and click Activate. It works on ${n} PC${n > 1 ? 's' : ''}.\n` +
+  const many = rows.length > 1;
+  const list = rows.map(r => `    ${r.license_key}   (${planName(r.plan)}, ${r.devices} PC${r.devices > 1 ? 's' : ''})`).join('\n');
+  const text = `Thanks for buying LunarTweaks!\n\nYour license key${many ? 's' : ''}:\n\n${list}\n\n` +
+    `To activate: open LunarTweaks, paste a key and click Activate.${many ? ' Use one key per PC.' : ''}\n` +
     `Moving to a new PC? Click "Sign out" in LunarTweaks on the old one first.\n\n` +
-    `Lost this email? Get your key again at ${site}/lost-key.html\n\n- LunarTweaks\n`;
+    `Lost this email? Get your keys again at ${site}/lost-key.html\n\n- LunarTweaks\n`;
   try {
-    await env.EMAIL.send({ to: row.email, from: { email: env.MAIL_FROM || 'noreply@lunartweaks.se', name: 'LunarTweaks' },
-                           subject: `Your LunarTweaks ${planName(row.plan)} key`, text });
+    await env.EMAIL.send({ to: rows[0].email, from: { email: env.MAIL_FROM || 'noreply@lunartweaks.se', name: 'LunarTweaks' },
+                           subject: `Your LunarTweaks key${many ? 's' : ''}`, text });
     return true;
   } catch (e) {
     console.log('email failed', e && e.code);
@@ -262,16 +283,17 @@ async function handleSession(env, request, url) {
   const id = url.searchParams.get('session_id') || '';
   if (!/^cs_(test|live)_[A-Za-z0-9]{10,200}$/.test(id)) stop({ status: 'error', error: 'Invalid session' }, 400);
   await rateLimit(env, request, 'session', 20, 60);
-  let row = await keyForSession(env, id);
-  if (!row) {
+  let rows = await keysForSession(env, id);
+  if (!rows.length) {
     const s = await stripeGet(env, 'checkout/sessions/' + encodeURIComponent(id));
     if (!s) stop({ status: 'not_found' });
     if (!sessionPaid(s)) stop({ status: 'pending' });
-    row = await issueForSession(env, s);
+    rows = await issueForSession(env, s);
   }
-  if (row.revoked) stop({ status: 'revoked' });
-  return json({ status: 'ok', key: row.license_key, plan: planName(row.plan), devices: row.devices, email: row.email,
-                emailed: !!env.EMAIL });
+  if (rows.every(r => r.revoked)) stop({ status: 'revoked' });
+  rows = rows.filter(r => !r.revoked);
+  return json({ status: 'ok', key: rows[0].license_key, keys: rows.map(r => r.license_key), plan: planName(rows[0].plan),
+                devices: rows[0].devices, email: rows[0].email, emailed: !!env.EMAIL });
 }
 
 // ---- Lost key ----
@@ -282,7 +304,7 @@ async function handleLostKey(env, request) {
   const email = String((await readJson(request)).email || '').trim().toLowerCase();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 190) stop({ status: 'error', error: 'Enter a valid email address' }, 400);
   const { results } = await (await db(env)).prepare('SELECT * FROM lt_keys WHERE email = ? AND revoked = 0').bind(email).all();
-  for (const row of results) await sendKeyEmail(env, row);
+  if (results.length) await sendKeyEmail(env, results);
   return json({ status: 'sent' });
 }
 
@@ -332,9 +354,11 @@ async function handleAdmin(env, request, url) {
       case 'create': {
         const plan = form.get('plan') === 'duo' ? 'duo' : 'pro';
         const email = String(form.get('email') || '').trim();
-        const r = await createKey(env, plan, email || null, null, null, String(form.get('note') || '').slice(0, 200));
-        msg = 'Created ' + r.license_key;
-        if (form.get('send') && r.email && (await sendKeyEmail(env, r))) msg += ' and emailed it.';
+        const made = [];
+        for (let i = 0; i < planKeyCount(env, plan); i++)
+          made.push(await createKey(env, plan, email || null, null, null, String(form.get('note') || '').slice(0, 200)));
+        msg = 'Created ' + made.map(r => r.license_key).join(', ');
+        if (form.get('send') && made[0].email && (await sendKeyEmail(env, made))) msg += ' and emailed ' + (made.length > 1 ? 'them.' : 'it.');
         break;
       }
       case 'resend': if (row) msg = (await sendKeyEmail(env, row)) ? 'Sent.' : 'Email is not set up or failed.'; break;
@@ -361,7 +385,7 @@ button{background:#7C3AED;border:0;color:#fff;cursor:pointer}button.alt{backgrou
     const c = esc(session.csrf);
     body += `<form method="get" class="row"><input name="q" value="${esc(q)}" placeholder="Email, key or checkout session" size="40"><button>Search</button></form>
 <details class="card"><summary>Create a key (giveaway, support)</summary><form method="post" class="row"><input type="hidden" name="csrf" value="${c}"><input type="hidden" name="action" value="create">
-<select name="plan"><option value="pro">Pro (1 PC)</option><option value="duo">Duo (2 PCs)</option></select><input name="email" type="email" placeholder="Email (optional)">
+<select name="plan"><option value="pro">Pro (1 PC)</option><option value="duo">Duo (2 keys, 1 PC each)</option></select><input name="email" type="email" placeholder="Email (optional)">
 <input name="note" placeholder="Note (optional)"><label><input type="checkbox" name="send" value="1"> Email it</label><button>Create</button></form></details>`;
     for (const r of rows) {
       const devs = (await d.prepare('SELECT label FROM lt_activations WHERE key_hash = ?').bind(r.key_hash).all()).results;
