@@ -110,8 +110,10 @@ const planKeyCount = (env, plan) => Math.max(1, (plans(env)[plan] || {}).keys | 
 
 // All keys bought in one checkout. The first key uses the session id, extra keys "<session id>#2", "#3", ...
 async function keysForSession(env, sessionId) {
-  const { results } = await (await db(env)).prepare('SELECT * FROM lt_keys WHERE session_id = ? OR session_id LIKE ? ORDER BY session_id')
-    .bind(sessionId, sessionId + '#%').all();
+  // No LIKE here: D1 rejects LIKE patterns longer than 50 bytes, and live session ids are ~66 characters.
+  const { results } = await (await db(env)).prepare(
+    "SELECT * FROM lt_keys WHERE session_id = ?1 OR substr(session_id, 1, length(?1) + 1) = ?1 || '#' ORDER BY session_id")
+    .bind(sessionId).all();
   return results;
 }
 
