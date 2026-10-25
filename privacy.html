@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="./favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" href="./assets/favicon-64.png?v=2">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png?v=2">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy · LunarTweaks</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+html{scroll-behavior:smooth}
+html:has(.theme-dark){color-scheme:dark;scrollbar-color:#2A2540 #07060D}
+html:has(.theme-light){color-scheme:light;scrollbar-color:#CFC7E6 #F6F4FB}
+.theme-dark{--bg:#07060D;--surface:#110F1C;--surface2:#1A1729;--line:#262139;--text:#F2EFFA;--muted:#A49EBC;--accent:#7C3AED;--accent-ink:#C4A1FF;--on-accent:#FFFFFF;--glow:rgba(124,58,237,0.38);--glowop:0.62;--nav:rgba(7,6,13,0.62)}
+.theme-light{--bg:#F6F4FB;--surface:#FFFFFF;--surface2:#EFEBF8;--line:#E2DCEF;--text:#15111F;--muted:#5A546E;--accent:#6D28D9;--accent-ink:#6D28D9;--on-accent:#FFFFFF;--glow:rgba(124,58,237,0.16);--glowop:0.3;--nav:rgba(246,244,251,0.72)}
+.root,.root *{transition:background-color .6s ease,color .6s ease,border-color .6s ease}
+a{color:var(--accent-ink)}a:hover{color:var(--text)}
+.btn{transition:transform .5s cubic-bezier(.22,1,.36,1),background-color .6s ease,color .6s ease,border-color .6s ease}
+.btn:hover{transform:translateY(-3px)}
+.btn:active{transform:translateY(0) scale(.98);transition-duration:.15s}
+.ic{transition:opacity .5s ease,transform .7s cubic-bezier(.34,1.56,.64,1)}
+.tg .ic-sun{opacity:0;transform:rotate(-120deg) scale(.4)}
+.tg .ic-moon{opacity:1;transform:none}
+.tg.is-light .ic-sun{opacity:1;transform:none}
+.tg.is-light .ic-moon{opacity:0;transform:rotate(120deg) scale(.4)}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--text)}
+.terms h2{margin:0 0 14px;font-family:'Sora',sans-serif;font-weight:600;font-size:23px;line-height:1.25;letter-spacing:-0.02em;color:var(--text)}
+.terms p{margin:0 0 14px}
+.terms ul{margin:0 0 14px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.terms section{scroll-margin-top:110px;padding:34px 0;border-top:1px solid var(--line)}
+.terms section:first-child{border-top:0;padding-top:0}
+.terms strong{color:var(--text);font-weight:700}
+.ph{padding:1px 6px;border-radius:6px;background:var(--surface2);color:var(--accent-ink);font-weight:600;white-space:nowrap}
+@media (max-width:720px){.hide-sm{display:none}}
+</style>
+</helmet>
+
+<div class="root {{themeClass}}" style="position: relative; isolation: isolate; overflow: clip; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font-family: 'Manrope', system-ui, sans-serif; font-size: 17px; line-height: 1.7">
+
+<div aria-hidden="true" style="position: fixed; z-index: 0; opacity: var(--glowop); top: -620px; right: -560px; width: 1240px; height: 1240px; pointer-events: none"><img src="./assets/905067bf163fd67856702c50c0b35412.png" alt="" style="display: block; width: 100%; height: 100%"></div>
+
+<header style="position: sticky; top: 0; z-index: 20; background: var(--nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px)">
+<nav style="max-width: 1200px; margin: 0 auto; padding: 18px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px">
+<a href="./" aria-label="LunarTweaks home" style="display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none">
+<img src="./assets/c3ef71e4eb6b70020b1c08ce5c4632ac.png" alt="" style="width: 38px; height: 38px; border-radius: 11px; display: block; box-shadow: 0 6px 18px -6px rgba(124,58,237,0.7)">
+<span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.02em">Lunar<span style="color: var(--accent-ink)">Tweaks</span></span>
+</a>
+<div style="margin-left: auto; display: flex; align-items: center; gap: 12px">
+<a class="btn hide-sm" href="./" style="display: inline-flex; align-items: center; gap: 8px; min-height: 46px; box-sizing: border-box; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); text-decoration: none; font-size: 15px; font-weight: 700">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="M11 6l-6 6 6 6"></path></svg>
+Back to site</a>
+<button class="tg btn {{tgClass}}" onClick="{{toggleTheme}}" aria-label="{{tgLabel}}" title="{{tgLabel}}" style="position: relative; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; padding: 0; flex: none">
+<svg class="ic ic-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; left: 12px; top: 12px"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg>
+<svg class="ic ic-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; top: 12px"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>
+</button>
+</div>
+</nav>
+</header>
+
+<main style="position: relative; z-index: 2; flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: clamp(40px, 6vw, 80px) clamp(16px, 4vw, 40px) clamp(64px, 8vw, 110px); display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px)">
+
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent-ink)">LEGAL</span>
+<h1 style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(38px, 5vw, 64px); line-height: 1.05; letter-spacing: -0.04em">Privacy Policy</h1>
+<p style="margin: 0; font-size: 19px; color: var(--muted)">What we collect when you buy and use LunarTweaks, why we need it, and what you can ask us to do with it.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--muted)">
+<span style="padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface)">Last updated: 25 October 2026</span>
+<span style="padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface)">Follows the GDPR</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px 64px">
+
+<nav class="toc" aria-label="On this page" style="flex: 1 1 240px; max-width: 300px; display: flex; flex-direction: column; gap: 4px; padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); font-size: 15px; font-weight: 600; line-height: 1.5">
+<span style="margin-bottom: 8px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-ink)">ON THIS PAGE</span>
+<a href="#who" style="padding: 5px 0">1. Who is responsible</a>
+<a href="#collect" style="padding: 5px 0">2. What we collect &amp; why</a>
+<a href="#pc" style="padding: 5px 0">3. What stays on your PC</a>
+<a href="#share" style="padding: 5px 0">4. Who we share it with</a>
+<a href="#transfers" style="padding: 5px 0">5. Transfers outside the EU</a>
+<a href="#keep" style="padding: 5px 0">6. How long we keep it</a>
+<a href="#cookies" style="padding: 5px 0">7. Cookies</a>
+<a href="#rights" style="padding: 5px 0">8. Your rights</a>
+<a href="#complaints" style="padding: 5px 0">9. Complaints</a>
+<a href="#changes" style="padding: 5px 0">10. Changes to this policy</a>
+<a href="#contact" style="padding: 5px 0">11. Contact</a>
+</nav>
+
+<article class="terms" style="flex: 999 1 560px; min-width: 0; max-width: 780px; color: var(--muted)">
+
+<section id="who">
+<h2>1. Who is responsible</h2>
+<p>LunarTweaks is responsible (the “controller”) for the personal data described here. You can reach us about anything in this policy at <a href="mailto:support@lunartweaks.se">support@lunartweaks.se</a>.</p>
+<p>This policy covers lunartweaks.se, buying a Pro or Duo license, and the license checks the LunarTweaks app makes. We collect as little as we can to sell and run licenses.</p>
+</section>
+
+<section id="collect">
+<h2>2. What we collect &amp; why</h2>
+<ul>
+<li><strong>When you buy a license</strong> — your email address, the plan you bought and Stripe’s reference for the payment. We use them to create and deliver your license key, help you if you lose it, handle refunds and keep the records the law requires. Legal basis: our contract with you, and our legal obligation to keep accounting records.</li>
+<li><strong>Your license key</strong> — the key itself, its plan and whether it is active or revoked, linked to the email you bought it with. Legal basis: our contract with you.</li>
+<li><strong>When you activate the app on a PC</strong> — a device identifier created by the app, a name for that PC, and when it was activated and last checked its license. We use this to keep to your plan’s PC limit and to let you move your license to a new PC. Legal basis: our contract with you.</li>
+<li><strong>When you email us</strong> — your email address and whatever you write. We use it to answer you. Legal basis: our contract with you, or our legitimate interest in answering questions.</li>
+<li><strong>Protection against abuse</strong> — to stop repeated attempts to guess keys, our key server counts requests per IP address. It stores only a scrambled (salted and hashed) form of the address, never the address itself, and the count is replaced within minutes. Legal basis: our legitimate interest in keeping the service secure.</li>
+</ul>
+<p>We don’t sell your data, build profiles of you or use your data for advertising.</p>
+</section>
+
+<section id="pc">
+<h2>3. What stays on your PC</h2>
+<p>The hardware scan and the profile LunarTweaks builds run on your PC, and their results are not sent to us.</p>
+<p>The app doesn’t send diagnostics, crash reports or usage data to us. The only thing it sends is the license check described in section 2.</p>
+</section>
+
+<section id="share">
+<h2>4. Who we share it with</h2>
+<p>We use a few services to run LunarTweaks. They handle data for us and only as needed for their part:</p>
+<ul>
+<li><strong>Stripe</strong> — takes your payment. Stripe collects your card details directly; we never see or store them. Stripe also processes payment data under its own privacy policy.</li>
+<li><strong>Cloudflare</strong> — runs our key server and its database, protects the website and forwards email sent to our support address.</li>
+<li><strong>GitHub</strong> — hosts the website.</li>
+<li><strong>Google</strong> — hosts the inbox where support emails arrive.</li>
+</ul>
+<p>We may also share data when the law requires it, for example with the Swedish Tax Agency.</p>
+</section>
+
+<section id="transfers">
+<h2>5. Transfers outside the EU</h2>
+<p>Some of these providers are based in the United States, so your data may be processed there. These transfers rely on the EU–US Data Privacy Framework or the European Commission’s standard contractual clauses.</p>
+</section>
+
+<section id="keep">
+<h2>6. How long we keep it</h2>
+<ul>
+<li><strong>License and PC activation data</strong> — for as long as your license can be used, so you can activate it and get it back if you lose it. Freeing a PC removes its activation.</li>
+<li><strong>Purchase records</strong> — 7 years, as the Swedish Bookkeeping Act (bokföringslagen) requires.</li>
+<li><strong>Support emails</strong> — as long as needed to handle your question and any follow-up.</li>
+<li><strong>Abuse-protection counts</strong> — replaced within minutes.</li>
+</ul>
+</section>
+
+<section id="cookies">
+<h2>7. Cookies</h2>
+<p>lunartweaks.se doesn’t use analytics, advertising or tracking cookies. Stripe’s checkout page uses its own cookies to process payments and prevent fraud; these are covered by Stripe’s policies.</p>
+</section>
+
+<section id="rights">
+<h2>8. Your rights</h2>
+<p>Under the GDPR you can ask us to:</p>
+<ul>
+<li>tell you what personal data we have about you and give you a copy;</li>
+<li>correct data that is wrong;</li>
+<li>delete your data;</li>
+<li>limit how we use it, or object to uses based on our legitimate interest;</li>
+<li>give you the data you provided in a machine-readable format.</li>
+</ul>
+<p>Email <a href="mailto:support@lunartweaks.se">support@lunartweaks.se</a> from the address you bought with, and we’ll answer within one month. Some data we have to keep by law, such as purchase records. If we delete your license data, the key will stop working.</p>
+</section>
+
+<section id="complaints">
+<h2>9. Complaints</h2>
+<p>If you think we handle your data wrongly, please tell us first so we can fix it. You also have the right to complain to the Swedish Authority for Privacy Protection (Integritetsskyddsmyndigheten, <a href="https://www.imy.se" target="_blank" rel="noopener">imy.se</a>), or to the data protection authority where you live.</p>
+</section>
+
+<section id="changes">
+<h2>10. Changes to this policy</h2>
+<p>We may update this policy when LunarTweaks or the law changes. The date at the top shows the latest version. If a change affects how we use data you have already given us, we’ll tell you by email first.</p>
+</section>
+
+<section id="contact">
+<h2>11. Contact</h2>
+<p>Questions about your data or this policy:</p>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--text)">
+<strong style="font-family: 'Sora', sans-serif; font-weight: 600">LunarTweaks</strong>
+<a href="mailto:support@lunartweaks.se">support@lunartweaks.se</a>
+</div>
+</section>
+
+</article>
+</div>
+</main>
+
+<footer style="position: relative; z-index: 2; border-top: 1px solid var(--line)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 22px clamp(16px, 4vw, 40px) 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; font-size: 14px; color: var(--muted)">
+<span>© 2026 LunarTweaks</span>
+<a href="./privacy.html" aria-current="page" style="color: var(--text); text-decoration: none; font-weight: 600">Privacy</a>
+<a href="./terms.html" style="color: var(--muted); text-decoration: none">Terms</a>
+<a href="#contact" style="color: var(--muted); text-decoration: none">Contact</a>
+<a href="#who" style="margin-left: auto; color: var(--muted); text-decoration: none; font-weight: 600">Back to top ↑</a>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4400}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const dark = st.dark ?? true;
+    return {
+      themeClass: dark ? 'theme-dark' : 'theme-light',
+      tgClass: dark ? '' : 'is-light',
+      tgLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => this.setState({ dark: !dark })
+    };
+  }
+}
+</script>
+</body>
+</html>

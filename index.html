@@ -210,7 +210,7 @@ Download free</button>
 </div>
 
 </div>
-<p class="rise d7" style="margin: 0; text-align: center; font-size: 14px; color: var(--muted)">Prices in euros (EUR). Your license key arrives by email right after checkout.</p>
+<p class="rise d7" style="margin: 0; text-align: center; font-size: 14px; color: var(--muted)">Prices in euros (EUR). Secure checkout by Stripe.</p>
 </section>
 
 <section id="download" class="sec" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; align-items: stretch">
@@ -251,9 +251,9 @@ Download for Windows</a>
 <footer style="position: relative; z-index: 2">
 <div style="max-width: 1200px; margin: 0 auto; padding: 22px clamp(16px, 4vw, 40px) 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; font-size: 14px; color: var(--muted)">
 <span>© 2026 LunarTweaks</span>
-<a href="#privacy" style="color: var(--muted); text-decoration: none">Privacy</a>
+<a href="./privacy.html" style="color: var(--muted); text-decoration: none">Privacy</a>
 <a href="./terms.html" style="color: var(--muted); text-decoration: none">Terms</a>
-<a href="#contact" style="color: var(--muted); text-decoration: none">Contact</a>
+<a href="./terms.html#contact" style="color: var(--muted); text-decoration: none">Contact</a>
 <span style="margin-left: auto; font-family: 'Sora', sans-serif; font-weight: 600; letter-spacing: 0.08em"><span style="color: var(--text)">{{pageNum}}</span> / 04</span>
 </div>
 </footer>
@@ -543,7 +543,7 @@ class Component extends DCLogic {
       curPricing: active === 'pricing' ? 'location' : 'false',
       curDownload: active === 'download' ? 'location' : 'false',
       pageNum: '0' + (idx + 1),
-      // Stripe Payment Links (live). Keys come from lunartweaks.se/api (Cloudflare Worker).
+      // Stripe Payment Links (https://buy.stripe.com/...), set in the Stripe section of the properties panel.
       proHref: stripeLink(this.props.proCheckoutUrl ?? 'https://buy.stripe.com/4gMcN5f4903y06Pdfo4wM00'),
       ultimateHref: stripeLink(this.props.ultimateCheckoutUrl ?? 'https://buy.stripe.com/6oU28r4pv8A4cTB0sC4wM01')
     };
