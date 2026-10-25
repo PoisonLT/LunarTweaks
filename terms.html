@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="./favicon.ico?v=2" sizes="any">
+<link rel="icon" type="image/png" href="./assets/favicon-64.png?v=2">
+<link rel="apple-touch-icon" href="./assets/apple-touch-icon.png?v=2">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms of Service · LunarTweaks</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+html{scroll-behavior:smooth}
+html:has(.theme-dark){color-scheme:dark;scrollbar-color:#2A2540 #07060D}
+html:has(.theme-light){color-scheme:light;scrollbar-color:#CFC7E6 #F6F4FB}
+.theme-dark{--bg:#07060D;--surface:#110F1C;--surface2:#1A1729;--line:#262139;--text:#F2EFFA;--muted:#A49EBC;--accent:#7C3AED;--accent-ink:#C4A1FF;--on-accent:#FFFFFF;--glow:rgba(124,58,237,0.38);--glowop:0.62;--nav:rgba(7,6,13,0.62)}
+.theme-light{--bg:#F6F4FB;--surface:#FFFFFF;--surface2:#EFEBF8;--line:#E2DCEF;--text:#15111F;--muted:#5A546E;--accent:#6D28D9;--accent-ink:#6D28D9;--on-accent:#FFFFFF;--glow:rgba(124,58,237,0.16);--glowop:0.3;--nav:rgba(246,244,251,0.72)}
+.root,.root *{transition:background-color .6s ease,color .6s ease,border-color .6s ease}
+a{color:var(--accent-ink)}a:hover{color:var(--text)}
+.btn{transition:transform .5s cubic-bezier(.22,1,.36,1),background-color .6s ease,color .6s ease,border-color .6s ease}
+.btn:hover{transform:translateY(-3px)}
+.btn:active{transform:translateY(0) scale(.98);transition-duration:.15s}
+.ic{transition:opacity .5s ease,transform .7s cubic-bezier(.34,1.56,.64,1)}
+.tg .ic-sun{opacity:0;transform:rotate(-120deg) scale(.4)}
+.tg .ic-moon{opacity:1;transform:none}
+.tg.is-light .ic-sun{opacity:1;transform:none}
+.tg.is-light .ic-moon{opacity:0;transform:rotate(120deg) scale(.4)}
+.toc a{color:var(--muted);text-decoration:none}
+.toc a:hover{color:var(--text)}
+.terms h2{margin:0 0 14px;font-family:'Sora',sans-serif;font-weight:600;font-size:23px;line-height:1.25;letter-spacing:-0.02em;color:var(--text)}
+.terms p{margin:0 0 14px}
+.terms ul{margin:0 0 14px;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.terms section{scroll-margin-top:110px;padding:34px 0;border-top:1px solid var(--line)}
+.terms section:first-child{border-top:0;padding-top:0}
+.terms strong{color:var(--text);font-weight:700}
+.ph{padding:1px 6px;border-radius:6px;background:var(--surface2);color:var(--accent-ink);font-weight:600;white-space:nowrap}
+@media (max-width:720px){.hide-sm{display:none}}
+</style>
+</helmet>
+
+<div class="root {{themeClass}}" style="position: relative; isolation: isolate; overflow: clip; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); color: var(--text); font-family: 'Manrope', system-ui, sans-serif; font-size: 17px; line-height: 1.7">
+
+<div aria-hidden="true" style="position: fixed; z-index: 0; opacity: var(--glowop); top: -620px; right: -560px; width: 1240px; height: 1240px; pointer-events: none"><img src="./assets/905067bf163fd67856702c50c0b35412.png" alt="" style="display: block; width: 100%; height: 100%"></div>
+
+<header style="position: sticky; top: 0; z-index: 20; background: var(--nav); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px)">
+<nav style="max-width: 1200px; margin: 0 auto; padding: 18px clamp(16px, 4vw, 40px); display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px">
+<a href="./" aria-label="LunarTweaks home" style="display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none">
+<img src="./assets/c3ef71e4eb6b70020b1c08ce5c4632ac.png" alt="" style="width: 38px; height: 38px; border-radius: 11px; display: block; box-shadow: 0 6px 18px -6px rgba(124,58,237,0.7)">
+<span style="font-family: 'Sora', sans-serif; font-weight: 700; font-size: 19px; letter-spacing: -0.02em">Lunar<span style="color: var(--accent-ink)">Tweaks</span></span>
+</a>
+<div style="margin-left: auto; display: flex; align-items: center; gap: 12px">
+<a class="btn hide-sm" href="./" style="display: inline-flex; align-items: center; gap: 8px; min-height: 46px; box-sizing: border-box; padding: 0 20px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); text-decoration: none; font-size: 15px; font-weight: 700">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"></path><path d="M11 6l-6 6 6 6"></path></svg>
+Back to site</a>
+<button class="tg btn {{tgClass}}" onClick="{{toggleTheme}}" aria-label="{{tgLabel}}" title="{{tgLabel}}" style="position: relative; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer; padding: 0; flex: none">
+<svg class="ic ic-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="position: absolute; left: 12px; top: 12px"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"></path></svg>
+<svg class="ic ic-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true" style="position: absolute; left: 12px; top: 12px"><circle cx="12" cy="12" r="4"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>
+</button>
+</div>
+</nav>
+</header>
+
+<main style="position: relative; z-index: 2; flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: clamp(40px, 6vw, 80px) clamp(16px, 4vw, 40px) clamp(64px, 8vw, 110px); display: flex; flex-direction: column; gap: clamp(40px, 5vw, 64px)">
+
+<div style="display: flex; flex-direction: column; gap: 16px; max-width: 760px">
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.12em; color: var(--accent-ink)">LEGAL</span>
+<h1 style="margin: 0; font-family: 'Sora', sans-serif; font-weight: 700; font-size: clamp(38px, 5vw, 64px); line-height: 1.05; letter-spacing: -0.04em">Terms of Service</h1>
+<p style="margin: 0; font-size: 19px; color: var(--muted)">The rules for using LunarTweaks and buying a Pro or Duo license. Written to be read, not skimmed past.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; font-size: 13px; font-weight: 600; color: var(--muted)">
+<span style="padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface)">Last updated: 25 October 2026</span>
+<span style="padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface)">Governed by Swedish law</span>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px 64px">
+
+<nav class="toc" aria-label="On this page" style="flex: 1 1 240px; max-width: 300px; display: flex; flex-direction: column; gap: 4px; padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); font-size: 15px; font-weight: 600; line-height: 1.5">
+<span style="margin-bottom: 8px; font-size: 13px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-ink)">ON THIS PAGE</span>
+<a href="#who" style="padding: 5px 0">1. Who we are</a>
+<a href="#license" style="padding: 5px 0">2. Your license</a>
+<a href="#purchases" style="padding: 5px 0">3. Purchases &amp; payment</a>
+<a href="#withdrawal" style="padding: 5px 0">4. Right of withdrawal &amp; refunds</a>
+<a href="#system" style="padding: 5px 0">5. Changes to your system</a>
+<a href="#use" style="padding: 5px 0">6. Acceptable use</a>
+<a href="#updates" style="padding: 5px 0">7. Updates &amp; support</a>
+<a href="#privacy" style="padding: 5px 0">8. Privacy</a>
+<a href="#liability" style="padding: 5px 0">9. Warranty &amp; liability</a>
+<a href="#ending" style="padding: 5px 0">10. Ending the agreement</a>
+<a href="#changes" style="padding: 5px 0">11. Changes to these terms</a>
+<a href="#law" style="padding: 5px 0">12. Law &amp; disputes</a>
+<a href="#contact" style="padding: 5px 0">13. Contact</a>
+</nav>
+
+<article class="terms" style="flex: 999 1 560px; min-width: 0; max-width: 780px; color: var(--muted)">
+
+<section id="who">
+<h2>1. Who we are</h2>
+<p>LunarTweaks is provided by LunarTweaks.</p>
+<p>These terms apply when you download, install or use the LunarTweaks software, or buy a license on lunartweaks.se. By installing or using the software you agree to them. If you don’t agree, please don’t install it.</p>
+</section>
+
+<section id="license">
+<h2>2. Your license</h2>
+<p>We don’t sell you the software itself — we give you a license to use it. The license is personal, non-exclusive and non-transferable.</p>
+<ul>
+<li><strong>Free</strong> — you may install and use the free features on as many of your own PCs as you like.</li>
+<li><strong>Pro</strong> — one license key, activated on <strong>one PC</strong> at a time.</li>
+<li><strong>Duo</strong> — one license key, activated on <strong>up to two PCs</strong> at a time.</li>
+</ul>
+<p>Paid licenses are one-time purchases with no subscription. If you replace a PC, you can move your license to the new one by deactivating it on the old one or contacting us.</p>
+<p>All rights in the software, the LunarTweaks name and logo stay with us.</p>
+</section>
+
+<section id="purchases">
+<h2>3. Purchases &amp; payment</h2>
+<p>Prices are shown in euros (EUR) and, for consumers in the EU, include VAT. Payment is handled by Stripe; we never see or store your full card details.</p>
+<p>Your purchase is complete when payment is confirmed. We then send your license key to the email address you gave at checkout. If it hasn’t arrived within an hour, check your spam folder, then contact us.</p>
+</section>
+
+<section id="withdrawal">
+<h2>4. Right of withdrawal &amp; refunds</h2>
+<p>If you buy as a consumer in the EU, you normally have a 14-day right of withdrawal from a distance purchase.</p>
+<p>For digital content delivered right away, that right ends once delivery has started, <strong>if</strong> you expressly agreed at checkout to immediate delivery and confirmed you understood you would lose the right of withdrawal. Delivery starts when we send your license key.</p>
+<p>The free version lets you run a full hardware scan and see your profile before you pay, so you can judge whether a paid plan is right for you.</p>
+<p>None of this limits your rights if the software is faulty — see section 9.</p>
+</section>
+
+<section id="system">
+<h2>5. Changes to your system</h2>
+<p>LunarTweaks changes Windows settings, services and startup items on your PC. Before applying anything, it shows you the profile it plans to use, and every change it makes is logged so you can undo it with one-click restore.</p>
+<p>Even so, every PC is different. Please:</p>
+<ul>
+<li>keep a recent backup of files that matter to you;</li>
+<li>review the profile before you apply it;</li>
+<li>use restore if something doesn’t behave as you expect, and tell us about it.</li>
+</ul>
+<p>Driver suggestions point you to the hardware maker’s own downloads. Installing third-party drivers is your choice and is covered by that maker’s terms.</p>
+</section>
+
+<section id="use">
+<h2>6. Acceptable use</h2>
+<p>You agree not to:</p>
+<ul>
+<li>share, sell or publish your license key, or use it on more PCs than your plan allows;</li>
+<li>copy, resell or redistribute the software, or bypass its licensing;</li>
+<li>reverse-engineer or decompile it, except where the law expressly allows this;</li>
+<li>use it on systems you don’t own or aren’t authorised to manage.</li>
+</ul>
+<p>If a key is clearly being misused, we may deactivate it. We will contact you first where we reasonably can.</p>
+</section>
+
+<section id="updates">
+<h2>7. Updates &amp; support</h2>
+<p>We release updates to fix problems, keep up with Windows updates and add features. What’s included with each plan is described on the pricing page at the time you buy.</p>
+<p>Support is by email at <a href="mailto:support@lunartweaks.se">support@lunartweaks.se</a>. We aim to reply within 3 business days.</p>
+</section>
+
+<section id="privacy">
+<h2>8. Privacy</h2>
+<p>The hardware scan runs on your PC. How we handle personal data — such as your email address for license delivery, and any diagnostics you choose to send — is described in our Privacy Policy.</p>
+</section>
+
+<section id="liability">
+<h2>9. Warranty &amp; liability</h2>
+<p>If you’re a consumer, you have legal rights if the software is faulty or doesn’t match how we described it. Nothing in these terms limits those mandatory rights under Swedish and EU consumer law.</p>
+<p>Beyond those rights, and to the extent the law allows:</p>
+<ul>
+<li>we don’t promise any particular performance gain — results depend on your hardware, drivers and how you use your PC;</li>
+<li>we aren’t liable for indirect loss, such as lost data, lost profit or lost time, unless caused by our gross negligence or intent;</li>
+<li>our total liability is limited to the amount you paid for your license.</li>
+</ul>
+<p>These limits do not apply to personal injury, or to loss caused by our intent or gross negligence.</p>
+</section>
+
+<section id="ending">
+<h2>10. Ending the agreement</h2>
+<p>You can stop using LunarTweaks at any time by uninstalling it. We recommend restoring your original settings first.</p>
+<p>We may end your license if you seriously breach these terms, for example by sharing or reselling your key. We won’t end a paid license for any other reason without refunding you fairly.</p>
+</section>
+
+<section id="changes">
+<h2>11. Changes to these terms</h2>
+<p>We may update these terms, for example when we add features or the law changes. The date at the top shows the latest version. If a change materially affects a paid license you already own, we’ll tell you by email at least 30 days before it takes effect.</p>
+</section>
+
+<section id="law">
+<h2>12. Law &amp; disputes</h2>
+<p>These terms are governed by Swedish law. If you’re a consumer living in another EU country, you also keep the protection of the mandatory rules of your own country.</p>
+<p>If something goes wrong, contact us first — most problems are quickest solved that way. If we can’t agree, consumers in Sweden can take the matter to the National Board for Consumer Disputes (Allmänna reklamationsnämnden, <a href="https://www.arn.se" target="_blank" rel="noopener">arn.se</a>), and we will take part in its process. Disputes may otherwise be decided by a Swedish general court.</p>
+</section>
+
+<section id="contact">
+<h2>13. Contact</h2>
+<p>Questions about these terms, your license or a purchase:</p>
+<div style="display: flex; flex-direction: column; gap: 6px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--text)">
+<strong style="font-family: 'Sora', sans-serif; font-weight: 600">LunarTweaks</strong>
+<a href="mailto:support@lunartweaks.se">support@lunartweaks.se</a>
+</div>
+</section>
+
+</article>
+</div>
+</main>
+
+<footer style="position: relative; z-index: 2; border-top: 1px solid var(--line)">
+<div style="max-width: 1200px; margin: 0 auto; padding: 22px clamp(16px, 4vw, 40px) 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; font-size: 14px; color: var(--muted)">
+<span>© 2026 LunarTweaks</span>
+<a href="./#privacy" style="color: var(--muted); text-decoration: none">Privacy</a>
+<a href="./terms.html" aria-current="page" style="color: var(--text); text-decoration: none; font-weight: 600">Terms</a>
+<a href="#contact" style="color: var(--muted); text-decoration: none">Contact</a>
+<a href="#who" style="margin-left: auto; color: var(--muted); text-decoration: none; font-weight: 600">Back to top ↑</a>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":4600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const dark = st.dark ?? true;
+    return {
+      themeClass: dark ? 'theme-dark' : 'theme-light',
+      tgClass: dark ? '' : 'is-light',
+      tgLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleTheme: () => this.setState({ dark: !dark })
+    };
+  }
+}
+</script>
+</body>
+</html>
