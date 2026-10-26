@@ -210,7 +210,7 @@ Download free</button>
 </div>
 
 </div>
-<p class="rise d7" style="margin: 0; text-align: center; font-size: 14px; color: var(--muted)">Prices in euros (EUR). Secure checkout by Stripe.</p>
+<p class="rise d7" style="margin: 0; text-align: center; font-size: 14px; color: var(--muted)">Prices in euros (EUR). In Sweden you pay in kronor: Pro 279 kr, Duo 389 kr. Secure checkout by Stripe.</p>
 </section>
 
 <section id="download" class="sec" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 18px; align-items: stretch">
@@ -260,7 +260,7 @@ Download for Windows</a>
 
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"proCheckoutUrl":{"editor":"text","default":"https://buy.stripe.com/4gMcN5f4903y06Pdfo4wM00","section":"Stripe"},"ultimateCheckoutUrl":{"editor":"text","default":"https://buy.stripe.com/6oU28r4pv8A4cTB0sC4wM01","section":"Stripe"},"$preview":{"width":1440,"height":3600}}'>
+<script type="text/x-dc" data-dc-script data-props='{"proCheckoutUrl":{"editor":"text","default":"https://buy.stripe.com/6oU5kDaNT2bG6vddfo4wM02","section":"Stripe"},"ultimateCheckoutUrl":{"editor":"text","default":"https://buy.stripe.com/8x2cN5cW16rW1aT8Z84wM03","section":"Stripe"},"$preview":{"width":1440,"height":3600}}'>
 class Component extends DCLogic {
   componentDidMount() {
     const win = window;
@@ -544,8 +544,8 @@ class Component extends DCLogic {
       curDownload: active === 'download' ? 'location' : 'false',
       pageNum: '0' + (idx + 1),
       // Stripe Payment Links (https://buy.stripe.com/...), set in the Stripe section of the properties panel.
-      proHref: stripeLink(this.props.proCheckoutUrl ?? 'https://buy.stripe.com/4gMcN5f4903y06Pdfo4wM00'),
-      ultimateHref: stripeLink(this.props.ultimateCheckoutUrl ?? 'https://buy.stripe.com/6oU28r4pv8A4cTB0sC4wM01')
+      proHref: stripeLink(this.props.proCheckoutUrl ?? 'https://buy.stripe.com/6oU5kDaNT2bG6vddfo4wM02'),
+      ultimateHref: stripeLink(this.props.ultimateCheckoutUrl ?? 'https://buy.stripe.com/8x2cN5cW16rW1aT8Z84wM03')
     };
   }
 }
